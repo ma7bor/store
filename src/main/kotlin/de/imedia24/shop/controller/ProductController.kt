@@ -51,6 +51,8 @@ class ProductController(private val productService: ProductService) {
     fun updateProduct(@RequestBody @Valid productResponse: ProductResponse): ResponseEntity<String> {
         if (!productService.checkSkuIfExist(productResponse.sku)) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Product NOT FOUND with that Sku!")
+        } else if (productService.checkProductIfExist(productResponse)) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("This Product is already exist!")
         } else return ResponseEntity.status(HttpStatus.OK).body(productService.updateProduct(productResponse))
     }
 }
