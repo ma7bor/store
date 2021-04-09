@@ -43,15 +43,13 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-web")
 	implementation ("org.hibernate:hibernate-gradle-plugin:5.4.30.Final")
 	implementation ("org.springframework.boot:spring-boot-starter-web")
-	implementation ("org.springframework.boot:spring-boot-starter-test" )
 	implementation ("org.junit.jupiter:junit-jupiter-api")
 	implementation ("org.junit.jupiter:junit-jupiter-engine")
 	implementation ("org.junit.platform:junit-platform-launcher")
 	implementation ( "org.mockito:mockito-junit-jupiter")
 	compile( "io.springfox:springfox-swagger2:2.9.2")
 	compile ("io.springfox:springfox-swagger-ui:2.9.2")
-
-	testImplementation("org.springframework.boot:spring-boot-starter-test")
+	testImplementation("org.springframework.boot:spring-boot-starter-test:2.4.3")
 }
 
 
