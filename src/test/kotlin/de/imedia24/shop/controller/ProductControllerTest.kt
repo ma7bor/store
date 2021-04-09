@@ -24,7 +24,6 @@ import kotlin.collections.ArrayList
 
 @ExtendWith
 @AutoConfigureMockMvc
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class ProductControllerTest {
 
     @InjectMocks
@@ -33,28 +32,8 @@ class ProductControllerTest {
     @Mock
     var productEntity: ProductEntity? = null
 
-    @Autowired
-    private var mvc: MockMvc? = null
-
-
-    @Mock
-    var productRepository: ProductRepository? = null
-
-    @Autowired
-    private val webApplicationContext: WebApplicationContext? = null
-
-    @Autowired
-    private val restTemplate: TestRestTemplate? = null
-
-    @LocalServerPort
-    private val port = 0
-
-    private var mockMvc: MockMvc? = null
-
     @Test
     fun shouldReturnProductsBySkusIfTheyExist() {
-
-
         // given
         val product_1 = ProductEntity("1", "Tv", "Samsung 60 px ",
                 345.toInt(), 5645.34.toBigDecimal(), ZonedDateTime.now(), ZonedDateTime.now())
@@ -76,6 +55,7 @@ class ProductControllerTest {
         assertThat(result?.statusCode?.equals(200))
 
     }
+    
     @Test
     fun shouldReturnEmptyListIfProductsDoesntExist() {
         // given
@@ -87,30 +67,5 @@ class ProductControllerTest {
         assertThat(result?.body?.size?.toInt()?.equals(0))
         assertThat(result?.statusCode?.equals(200))
     }
-
-    @Test
-    @Throws(java.lang.Exception::class)
-    fun givenBadArguments_whenGetSpecificException_thenBadRequest() {
-        val exceptionParam = "bad_arguments"
-        mvc!!.perform(get("/products/{exception_id}", exceptionParam)
-                .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isBadRequest())
-                .andExpect { result: MvcResult -> assertTrue(result.resolvedException is BadArgumentsException) }
-                .andExpect { result: MvcResult -> assertEquals("bad arguments", result.resolvedException!!.message) }
-    }
-
-    @Test
-    @Throws(Exception::class)
-    fun givenOther_whenGetSpecificException_thenInternalServerError() {
-        val exceptionParam = "dummy"
-        mvc!!.perform(get("/products/{exception_id}", exceptionParam)
-                .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isInternalServerError())
-                .andExpect { result: MvcResult -> assertTrue(result.resolvedException is InternalException) }
-                .andExpect { result: MvcResult -> assertEquals("bad arguments", result.resolvedException!!.message) }
-    }
-
-
-
 }
 
