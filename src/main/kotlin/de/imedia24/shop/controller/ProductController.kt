@@ -39,13 +39,11 @@ class ProductController(private val productService: ProductService) {
     fun addProduct(@RequestBody @Valid productResponse: ProductResponse, result: BindingResult): ResponseEntity<String> {
         if (result.hasErrors()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(result.globalErrors.toString())
-        }
-        if (productService.checkSkuIfExist(productResponse.sku)) {
+        } else if (productService.checkSkuIfExist(productResponse.sku)) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body("This Sku is already taken by another product!")
-        }
-        if (productService.checkProductIfExist(productResponse)){
+        } else if (productService.checkProductIfExist(productResponse)){
             return ResponseEntity.status(HttpStatus.CONFLICT).body("This Product is already exist!")
-        }
+        } else
         return ResponseEntity.status(HttpStatus.CREATED).body(productService.addProduct(productResponse))
     }
 
@@ -53,7 +51,6 @@ class ProductController(private val productService: ProductService) {
     fun updateProduct(@RequestBody @Valid productResponse: ProductResponse): ResponseEntity<String> {
         if (!productService.checkSkuIfExist(productResponse.sku)) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Product NOT FOUND with that Sku!")
-        }
-        return ResponseEntity.status(HttpStatus.OK).body(productService.updateProduct(productResponse))
+        } else return ResponseEntity.status(HttpStatus.OK).body(productService.updateProduct(productResponse))
     }
 }
